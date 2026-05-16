@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover">
+<title>Founder Deal Check</title>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#fafafa" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0a0a0a" media="(prefers-color-scheme: dark)">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="DealCheck">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+<link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
+<style>
+:root {
+  --bg: #fafafa;
+  --text: #1a1a1a;
+  --text2: #444;
+  --muted: #999;
+  --dim: #bbb;
+  --input-bg: #f0f0f0;
+  --card-bg: #fff;
+  --border: rgba(0,0,0,0.06);
+  --focus: rgba(0,0,0,0.08);
+  --line: rgba(0,0,0,0.06);
+}
+@media(prefers-color-scheme:dark){:root{
+  --bg: #0a0a0a;
+  --text: #f0f0f0;
+  --text2: #bbb;
+  --muted: #666;
+  --dim: #444;
+  --input-bg: #1a1a1a;
+  --card-bg: #141414;
+  --border: rgba(255,255,255,0.06);
+  --focus: rgba(255,255,255,0.08);
+  --line: rgba(255,255,255,0.06);
+}}
+*{box-sizing:border-box;margin:0;padding:0}
+html{font-size:18px;-webkit-text-size-adjust:100%}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','Segoe UI',system-ui,sans-serif;
+  background:var(--bg);color:var(--text);
+  min-height:100dvh;
+  padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom);
+  -webkit-font-smoothing:antialiased;
+}
+.app{max-width:420px;margin:0 auto;padding:32px 24px 48px}
+.title{font-size:1.15rem;font-weight:700;color:var(--text2);letter-spacing:-0.01em;margin-bottom:32px}
+.inputs{display:flex;flex-direction:column;gap:20px}
+.label{font-size:0.78rem;font-weight:600;color:var(--text2);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:8px}
+.input-wrap{
+  display:flex;align-items:center;
+  background:var(--input-bg);border-radius:14px;
+  padding:18px 20px;
+  transition:box-shadow 0.15s;
+}
+.input-wrap:focus-within{box-shadow:0 0 0 2.5px var(--focus)}
+.input-prefix{font-size:1.9rem;font-weight:700;letter-spacing:-0.03em;color:var(--dim);flex-shrink:0;pointer-events:none;margin-right:2px}
+.input-inner{display:flex;align-items:baseline;flex:1;min-width:0;cursor:text;overflow:hidden}
+.input-suffix{font-size:1.3rem;font-weight:700;color:var(--dim);pointer-events:none;margin-left:2px;flex-shrink:0}
+.field input{
+  flex:0 0 auto;width:auto;min-width:1.5ch;font-size:1.9rem;font-weight:700;letter-spacing:-0.03em;
+  border:none;outline:none;background:transparent;color:var(--text);
+  padding:0;-webkit-appearance:none;
+}
+.field input::placeholder{color:var(--muted);opacity:0.5;font-weight:500}
+.postmoney{font-size:0.78rem;color:var(--dim);margin-top:14px;padding-left:2px}
+.results{margin-top:32px;margin-bottom:28px}
+.r{padding:18px 0;border-bottom:1px solid var(--line)}
+.r:last-child{border-bottom:none;padding-bottom:0}
+.r-label{font-size:0.78rem;font-weight:600;color:var(--text2);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:2px}
+.r-val{font-size:2.6rem;font-weight:800;letter-spacing:-0.04em;line-height:1.1}
+.r-val.empty{color:var(--dim);opacity:0.4}
+.copy{
+  display:block;width:100%;padding:15px;
+  border:1.5px solid var(--border);border-radius:14px;
+  background:var(--card-bg);color:var(--text2);
+  font-size:0.88rem;font-weight:600;cursor:pointer;
+  -webkit-appearance:none;transition:background 0.12s;
+}
+.copy:active{background:var(--input-bg)}
+.foot{margin-top:28px;padding-top:18px;border-top:1px solid var(--line)}
+.foot-line{font-size:0.75rem;color:var(--dim);line-height:1.6}
+.ed{color:var(--dim);text-decoration:underline;text-underline-offset:2px;cursor:pointer;border:none;background:none;font:inherit;padding:0}
+.sett{display:none;margin-top:16px;flex-direction:column;gap:14px}
+.sett.open{display:flex}
+.sett input[type=text]{
+  width:100%;font-size:1rem;font-weight:600;
+  border:1px solid var(--border);outline:none;
+  background:var(--input-bg);color:var(--text);
+  border-radius:10px;padding:11px 14px;-webkit-appearance:none;
+}
+.sett input[type=text]:focus{box-shadow:0 0 0 2.5px var(--focus)}
+.sr{display:flex;align-items:center;gap:14px}
+.sr input[type=range]{flex:1;accent-color:var(--text);height:3px}
+.sr .v{font-size:1rem;font-weight:700;min-width:44px;text-align:right}
+.sl{font-size:0.68rem;font-weight:600;color:var(--muted);margin-bottom:5px}
+.hint{font-size:0.62rem;color:var(--dim);line-height:1.5;margin-top:8px}
+.disclaim{margin-top:24px;font-size:0.58rem;color:var(--dim);text-align:center;opacity:0.6}
+.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:32px}
+.top .title{margin-bottom:0}
+.help-btn{
+  width:32px;height:32px;border-radius:50%;
+  border:1.5px solid var(--border);background:var(--card-bg);
+  color:var(--muted);font-size:0.82rem;font-weight:600;
+  cursor:pointer;display:flex;align-items:center;justify-content:center;
+  -webkit-appearance:none;transition:background 0.12s;flex-shrink:0;
+}
+.help-btn:active{background:var(--input-bg)}
+.overlay{
+  display:none;position:fixed;inset:0;z-index:100;
+  background:rgba(0,0,0,0.4);
+  align-items:flex-end;justify-content:center;
+}
+.overlay.open{display:flex}
+@media(prefers-color-scheme:dark){.overlay{background:rgba(0,0,0,0.6)}}
+.sheet{
+  background:var(--card-bg);
+  width:100%;max-width:420px;
+  max-height:85dvh;overflow-y:auto;
+  border-radius:18px 18px 0 0;
+  padding:28px 24px 36px;
+  box-shadow:0 -4px 40px rgba(0,0,0,0.15);
+  -webkit-overflow-scrolling:touch;
+}
+.sheet-handle{
+  width:36px;height:4px;border-radius:2px;
+  background:var(--dim);opacity:0.4;
+  margin:0 auto 24px;
+}
+.sheet h2{font-size:1.05rem;font-weight:700;margin-bottom:20px;color:var(--text)}
+.sheet h3{font-size:0.72rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.05em;margin:20px 0 8px}
+.sheet h3:first-of-type{margin-top:0}
+.sheet p{font-size:0.82rem;color:var(--text);line-height:1.55;margin-bottom:6px}
+.sheet ul{list-style:none;padding:0;margin:0 0 6px}
+.sheet li{font-size:0.82rem;color:var(--text);line-height:1.55;padding-left:14px;position:relative}
+.sheet li::before{content:"";position:absolute;left:0;top:9px;width:4px;height:4px;border-radius:50%;background:var(--dim)}
+.sheet .tip{font-size:0.78rem;color:var(--muted);background:var(--input-bg);border-radius:10px;padding:12px 14px;margin-top:16px;line-height:1.5}
+.sheet .tip b{font-weight:600;color:var(--text)}
+.sheet .sheet-foot{font-size:0.62rem;color:var(--dim);margin-top:20px;text-align:center;opacity:0.7}
+.sheet-close{
+  display:block;width:100%;padding:14px;margin-top:20px;
+  border:1.5px solid var(--border);border-radius:14px;
+  background:var(--card-bg);color:var(--muted);
+  font-size:0.82rem;font-weight:600;cursor:pointer;
+  -webkit-appearance:none;
+}
+.sheet-close:active{background:var(--input-bg)}
+@media(max-width:380px){
+  html{font-size:16px}
+  .app{padding:24px 18px 40px}
+  .r-val{font-size:2.2rem}
+}
+</style>
+</head>
+<body>
+<main class="app">
+  <div class="top">
+    <div class="title">Founder Deal Check</div>
+    <button class="help-btn" id="helpBtn" aria-label="Help">?</button>
+  </div>
+
+  <div class="inputs">
+    <div class="field">
+      <div class="label">Raise</div>
+      <div class="input-wrap">
+        <span class="input-prefix">$</span>
+        <div class="input-inner">
+          <input id="raise" type="text" inputmode="decimal" placeholder="2" autocomplete="off" size="1">
+          <span class="input-suffix" id="raiseSuffix"></span>
+        </div>
+      </div>
+    </div>
+    <div class="field">
+      <div class="label">Pre-Money Valuation</div>
+      <div class="input-wrap">
+        <span class="input-prefix">$</span>
+        <div class="input-inner">
+          <input id="pre" type="text" inputmode="decimal" placeholder="8" autocomplete="off" size="1">
+          <span class="input-suffix" id="preSuffix"></span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="postmoney" id="postLine"></div>
+
+  <div class="results">
+    <div class="r">
+      <div class="r-label">Investor Gets</div>
+      <div class="r-val empty" id="o1">&mdash;</div>
+    </div>
+    <div class="r">
+      <div class="r-label">You at Exit</div>
+      <div class="r-val empty" id="o2">&mdash;</div>
+    </div>
+    <div class="r">
+      <div class="r-label">Your Take</div>
+      <div class="r-val empty" id="o3">&mdash;</div>
+    </div>
+  </div>
+
+  <button class="copy" id="copyBtn">Copy Snapshot</button>
+
+  <div class="foot">
+    <div class="foot-line" id="footLine">
+      Assumes $50M exit and 50% future dilution.
+      <button class="ed" id="editBtn">Edit</button>
+    </div>
+    <div class="sett" id="sett">
+      <div>
+        <div class="sl">Exit Valuation</div>
+        <input id="exitVal" type="text" inputmode="decimal" placeholder="$50M" autocomplete="off">
+      </div>
+      <div>
+        <div class="sl">Future Dilution</div>
+        <div class="sr">
+          <input id="dil" type="range" min="0" max="80" step="5" value="50">
+          <span class="v" id="dilV">50%</span>
+        </div>
+        <div class="hint">Typical venture-backed companies may experience ~40–60% additional dilution across future funding rounds.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="disclaim">Not financial advice.</div>
+</main>
+<div class="overlay" id="overlay">
+  <div class="sheet" id="sheet">
+    <div class="sheet-handle"></div>
+    <h2>Founder Deal Check</h2>
+    <p>Use this when someone gives you a possible investment amount and valuation.</p>
+    <h3>Before the meeting</h3>
+    <p>Set your assumptions:</p>
+    <ul>
+      <li>Target exit</li>
+      <li>Future dilution</li>
+    </ul>
+    <p>These are saved on this device.</p>
+    <h3>During the meeting</h3>
+    <p>Enter:</p>
+    <ul>
+      <li>Raise</li>
+      <li>Valuation</li>
+    </ul>
+    <h3>What the results mean</h3>
+    <ul>
+      <li><b>Investor Gets</b> — their ownership from this round</li>
+      <li><b>You at Exit</b> — your estimated ownership after future dilution</li>
+      <li><b>Your Take</b> — estimated payout at your saved exit value</li>
+    </ul>
+    <div class="tip"><b>Tip:</b> Type "2" for $2M, "500k" for $500K, or "8.5" for $8.5M.</div>
+    <button class="sheet-close" id="helpClose">Close</button>
+    <div class="sheet-foot">This is a quick conversation tool, not a full cap table model.</div>
+  </div>
+</div>
+<script>
+const $=id=>document.getElementById(id);
+const K='founderDealCheck';
+const D={exit:50000000,dil:50};
+
+function p(r){
+  if(!r)return 0;
+  const s=r.replace(/[$,\s]/g,'').toLowerCase();
+  if(/^[\d.]+b$/.test(s))return parseFloat(s)*1e9;
+  if(/^[\d.]+m$/.test(s))return parseFloat(s)*1e6;
+  if(/^[\d.]+k$/.test(s))return parseFloat(s)*1e3;
+  const n=parseFloat(s);
+  if(!isFinite(n))return 0;
+  return n>0&&n<1000?n*1e6:n;
+}
+
+function fm(n){
+  if(!isFinite(n)||n<=0)return'$0';
+  if(n>=1e9)return'$'+(n/1e9).toFixed(n>=10e9?0:1).replace(/\.0$/,'')+'B';
+  if(n>=1e6)return'$'+(n/1e6).toFixed(n>=10e6?0:1).replace(/\.0$/,'')+'M';
+  if(n>=1e3)return'$'+Math.round(n/1e3)+'K';
+  return'$'+Math.round(n);
+}
+
+function fp(n){
+  if(!isFinite(n))return'0%';
+  return(n>=10?n.toFixed(1):n.toFixed(2)).replace(/\.?0+$/,'')+'%';
+}
+
+function ld(){try{return{...D,...JSON.parse(localStorage.getItem(K)||'{}')};}catch{return{...D};}}
+function sv(){localStorage.setItem(K,JSON.stringify({exit:p($('exitVal').value)||D.exit,dil:+$('dil').value}));}
+
+function foot(){
+  const e=p($('exitVal').value)||D.exit;
+  const d=$('dil').value;
+  $('footLine').firstChild.textContent='Assumes '+fm(e)+' exit and '+d+'% future dilution. ';
+}
+
+function gv(id){return +$(id).dataset.parsed||p($(id).value);}
+
+function calc(){
+  const raise=gv('raise'),pre=gv('pre');
+  const exit=p($('exitVal').value)||D.exit;
+  const dil=+$('dil').value/100;
+
+  if(!raise||!pre){
+    $('o1').innerHTML='&mdash;';$('o1').classList.add('empty');
+    $('o2').innerHTML='&mdash;';$('o2').classList.add('empty');
+    $('o3').innerHTML='&mdash;';$('o3').classList.add('empty');
+    $('postLine').textContent='';
+    return;
+  }
+
+  const post=pre+raise;
+  const inv=raise/post;
+  const fExit=(1-inv)*(1-dil);
+  const take=fExit*exit;
+
+  $('postLine').textContent='Post-money: '+fm(post);
+  $('o1').textContent=fp(inv*100);$('o1').classList.remove('empty');
+  $('o2').textContent=fp(fExit*100);$('o2').classList.remove('empty');
+  $('o3').textContent=fm(take);$('o3').classList.remove('empty');
+
+  sv();foot();
+}
+
+function snap(){
+  const raise=gv('raise'),pre=gv('pre');
+  const exit=p($('exitVal').value)||D.exit;
+  const dil=+$('dil').value/100;
+  const post=pre+raise;
+  const inv=post?raise/post:0;
+  const fExit=(1-inv)*(1-dil);
+  return fm(raise)+' raise @ '+fm(pre)+' pre\n\nPost-money: '+fm(post)+'\nInvestor gets: '+fp(inv*100)+'\nFounder at exit: '+fp(fExit*100)+'\nFounder take @ '+fm(exit)+' exit:\n'+fm(fExit*exit);
+}
+
+function clean(id){
+  const el=$(id);
+  const raw=el.value;
+  const suf=$(id+'Suffix');
+  if(!raw.trim()){suf.textContent='';el.dataset.parsed='0';el.size=Math.max(el.placeholder.length,1);return;}
+  // parse with original input (includes any k/m/b suffix)
+  const n=p(raw);
+  if(!n){suf.textContent='';el.dataset.parsed='0';return;}
+  // store parsed value so calc() can use it
+  el.dataset.parsed=n;
+  // strip to just digits and decimal for display
+  const nums=raw.replace(/[^0-9.]/g,'');
+  if(nums!==raw)el.value=nums;
+  el.size=Math.max(el.value.length,1);
+  if(n>=1e9)suf.textContent='B';
+  else if(n>=1e6)suf.textContent='M';
+  else if(n>=1e3)suf.textContent='K';
+  else suf.textContent='';
+}
+
+$('raise').addEventListener('input',()=>{clean('raise');calc();});
+$('pre').addEventListener('input',()=>{clean('pre');calc();});
+document.querySelectorAll('.input-wrap').forEach(w=>w.addEventListener('click',()=>w.querySelector('input').focus()));
+$('exitVal').addEventListener('input',calc);
+$('dil').addEventListener('input',()=>{$('dilV').textContent=$('dil').value+'%';calc();});
+
+$('helpBtn').addEventListener('click',()=>$('overlay').classList.add('open'));
+$('helpClose').addEventListener('click',()=>$('overlay').classList.remove('open'));
+$('overlay').addEventListener('click',(e)=>{if(e.target===$('overlay'))$('overlay').classList.remove('open');});
+
+$('editBtn').addEventListener('click',()=>{
+  const o=$('sett').classList.toggle('open');
+  $('editBtn').textContent=o?'Done':'Edit';
+});
+
+$('copyBtn').addEventListener('click',async()=>{
+  try{await navigator.clipboard.writeText(snap());$('copyBtn').textContent='Copied';setTimeout(()=>$('copyBtn').textContent='Copy Snapshot',1200);}
+  catch{prompt('Copy this:',snap());}
+});
+
+(function(){
+  const s=ld();
+  $('exitVal').value=fm(s.exit);
+  $('dil').value=s.dil;
+  $('dilV').textContent=s.dil+'%';
+  foot();
+})();
+
+if('serviceWorker'in navigator)window.addEventListener('load',()=>navigator.serviceWorker.register('./service-worker.js').catch(()=>{}));
+</script>
+</body>
+</html>
