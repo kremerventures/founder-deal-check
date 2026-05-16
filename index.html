@@ -51,22 +51,22 @@ body{
 .inputs{display:flex;flex-direction:column;gap:20px}
 .label{font-size:0.78rem;font-weight:600;color:var(--text2);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:8px}
 .input-wrap{
-  display:flex;align-items:center;
+  display:flex;align-items:baseline;
   background:var(--input-bg);border-radius:14px;
   padding:18px 20px;
   transition:box-shadow 0.15s;
 }
 .input-wrap:focus-within{box-shadow:0 0 0 2.5px var(--focus)}
-.input-prefix{font-size:1.9rem;font-weight:700;letter-spacing:-0.03em;color:var(--dim);flex-shrink:0;pointer-events:none;margin-right:2px}
+.input-prefix{font-size:1.9rem;font-weight:700;letter-spacing:-0.03em;color:var(--dim);flex-shrink:0;pointer-events:none;margin-right:1px}
 .input-inner{display:flex;align-items:baseline;flex:1;min-width:0;cursor:text;overflow:hidden}
-.input-suffix{font-size:1.3rem;font-weight:700;color:var(--dim);pointer-events:none;margin-left:2px;flex-shrink:0}
+.input-suffix{font-size:1.9rem;font-weight:700;letter-spacing:-0.03em;color:var(--dim);pointer-events:none;margin-left:1px;flex-shrink:0}
 .field input{
-  flex:0 0 auto;width:auto;min-width:1.5ch;font-size:1.9rem;font-weight:700;letter-spacing:-0.03em;
+  flex:0 0 auto;width:1ch;min-width:1ch;font-size:1.9rem;font-weight:700;letter-spacing:-0.03em;
   border:none;outline:none;background:transparent;color:var(--text);
   padding:0;-webkit-appearance:none;
 }
 .field input::placeholder{color:var(--muted);opacity:0.5;font-weight:500}
-.postmoney{font-size:0.78rem;color:var(--dim);margin-top:14px;padding-left:2px}
+.postmoney{font-size:0.95rem;font-weight:600;color:var(--text2);margin-top:14px;padding-left:2px}
 .results{margin-top:32px;margin-bottom:28px}
 .r{padding:18px 0;border-bottom:1px solid var(--line)}
 .r:last-child{border-bottom:none;padding-bottom:0}
@@ -82,7 +82,7 @@ body{
 }
 .copy:active{background:var(--input-bg)}
 .foot{margin-top:28px;padding-top:18px;border-top:1px solid var(--line)}
-.foot-line{font-size:0.75rem;color:var(--dim);line-height:1.6}
+.foot-line{font-size:0.95rem;font-weight:500;color:var(--text2);line-height:1.6}
 .ed{color:var(--dim);text-decoration:underline;text-underline-offset:2px;cursor:pointer;border:none;background:none;font:inherit;padding:0}
 .sett{display:none;margin-top:16px;flex-direction:column;gap:14px}
 .sett.open{display:flex}
@@ -335,7 +335,7 @@ function clean(id){
   const el=$(id);
   const raw=el.value;
   const suf=$(id+'Suffix');
-  if(!raw.trim()){suf.textContent='';el.dataset.parsed='0';el.size=Math.max(el.placeholder.length,1);return;}
+  if(!raw.trim()){suf.textContent='';el.dataset.parsed='0';el.style.width=Math.max(el.placeholder.length,1)+'ch';return;}
   // parse with original input (includes any k/m/b suffix)
   const n=p(raw);
   if(!n){suf.textContent='';el.dataset.parsed='0';return;}
@@ -344,7 +344,7 @@ function clean(id){
   // strip to just digits and decimal for display
   const nums=raw.replace(/[^0-9.]/g,'');
   if(nums!==raw)el.value=nums;
-  el.size=Math.max(el.value.length,1);
+  el.style.width=Math.max(el.value.length,1)+'ch';
   if(n>=1e9)suf.textContent='B';
   else if(n>=1e6)suf.textContent='M';
   else if(n>=1e3)suf.textContent='K';
