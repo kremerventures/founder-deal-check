@@ -47,7 +47,27 @@ body{
   -webkit-font-smoothing:antialiased;
 }
 .app{max-width:420px;margin:0 auto;padding:32px 24px 48px}
-.title{font-size:1.15rem;font-weight:700;color:var(--text2);letter-spacing:-0.01em;margin-bottom:32px}
+.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.top .title{font-size:1.15rem;font-weight:700;color:var(--text2);letter-spacing:-0.01em;margin:0}
+.help-btn{
+  width:32px;height:32px;border-radius:50%;
+  border:1.5px solid var(--border);background:var(--card-bg);
+  color:var(--muted);font-size:0.82rem;font-weight:600;
+  cursor:pointer;display:flex;align-items:center;justify-content:center;
+  -webkit-appearance:none;transition:background 0.12s;flex-shrink:0;
+}
+.help-btn:active{background:var(--input-bg)}
+.context-bar{
+  display:flex;align-items:center;gap:6px;
+  margin-bottom:28px;
+  font-size:0.78rem;color:var(--muted);
+}
+.context-bar .ctx-text{flex:1}
+.ctx-link{
+  color:var(--muted);text-decoration:underline;text-underline-offset:2px;
+  cursor:pointer;border:none;background:none;font:inherit;padding:0;
+  font-size:0.78rem;flex-shrink:0;
+}
 .inputs{display:flex;flex-direction:column;gap:20px}
 .label{font-size:0.78rem;font-weight:600;color:var(--text2);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:8px}
 .input-wrap{
@@ -99,16 +119,7 @@ body{
 .sl{font-size:0.68rem;font-weight:600;color:var(--muted);margin-bottom:5px}
 .hint{font-size:0.62rem;color:var(--dim);line-height:1.5;margin-top:8px}
 .disclaim{margin-top:24px;font-size:0.58rem;color:var(--dim);text-align:center;opacity:0.6}
-.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:32px}
-.top .title{margin-bottom:0}
-.help-btn{
-  width:32px;height:32px;border-radius:50%;
-  border:1.5px solid var(--border);background:var(--card-bg);
-  color:var(--muted);font-size:0.82rem;font-weight:600;
-  cursor:pointer;display:flex;align-items:center;justify-content:center;
-  -webkit-appearance:none;transition:background 0.12s;flex-shrink:0;
-}
-.help-btn:active{background:var(--input-bg)}
+/* Overlays */
 .overlay{
   display:none;position:fixed;inset:0;z-index:100;
   background:rgba(0,0,0,0.4);
@@ -148,6 +159,40 @@ body{
   -webkit-appearance:none;
 }
 .sheet-close:active{background:var(--input-bg)}
+/* Setup overlay */
+.setup-overlay{
+  display:none;position:fixed;inset:0;z-index:200;
+  background:var(--bg);
+  justify-content:center;align-items:flex-start;
+  overflow-y:auto;
+  -webkit-overflow-scrolling:touch;
+}
+.setup-overlay.open{display:flex}
+.setup{
+  width:100%;max-width:420px;
+  padding:48px 24px 48px;
+}
+.setup h1{font-size:1.3rem;font-weight:700;margin-bottom:6px}
+.setup .sub{font-size:0.85rem;color:var(--muted);margin-bottom:32px;line-height:1.5}
+.setup .sf{margin-bottom:20px}
+.setup .sf-label{font-size:0.72rem;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:8px}
+.setup .sf-input{
+  width:100%;font-size:1.4rem;font-weight:700;letter-spacing:-0.02em;
+  border:none;outline:none;background:var(--input-bg);color:var(--text);
+  border-radius:14px;padding:16px 18px;-webkit-appearance:none;
+}
+.setup .sf-input:focus{box-shadow:0 0 0 2.5px var(--focus)}
+.setup .sf-input::placeholder{color:var(--muted);opacity:0.5;font-weight:500}
+.setup .sf-hint{font-size:0.68rem;color:var(--dim);margin-top:6px;line-height:1.4}
+.setup .sf-computed{font-size:0.82rem;color:var(--text2);margin-top:6px;font-weight:600}
+.setup-save{
+  display:block;width:100%;padding:16px;margin-top:28px;
+  border:none;border-radius:14px;
+  background:var(--text);color:var(--bg);
+  font-size:0.95rem;font-weight:700;cursor:pointer;
+  -webkit-appearance:none;
+}
+.setup-save:active{opacity:0.85}
 @media(max-width:380px){
   html{font-size:16px}
   .app{padding:24px 18px 40px}
@@ -160,6 +205,11 @@ body{
   <div class="top">
     <div class="title">Founder Deal Check</div>
     <button class="help-btn" id="helpBtn" aria-label="Help">?</button>
+  </div>
+
+  <div class="context-bar">
+    <span class="ctx-text" id="ctxText"></span>
+    <button class="ctx-link" id="ctxEdit">Edit setup</button>
   </div>
 
   <div class="inputs">
@@ -226,6 +276,8 @@ body{
 
   <div class="disclaim">Not financial advice.</div>
 </main>
+
+<!-- Help overlay -->
 <div class="overlay" id="overlay">
   <div class="sheet" id="sheet">
     <div class="sheet-handle"></div>
@@ -255,10 +307,41 @@ body{
     <div class="sheet-foot">This is a quick conversation tool, not a full cap table model.</div>
   </div>
 </div>
+
+<!-- Setup overlay -->
+<div class="setup-overlay" id="setupOverlay">
+  <div class="setup">
+    <h1>Your Setup</h1>
+    <div class="sub">Set your current position before heading into meetings.</div>
+
+    <div class="sf">
+      <div class="sf-label">Your Ownership</div>
+      <input class="sf-input" id="setupOwn" type="text" inputmode="decimal" placeholder="e.g. 80" autocomplete="off">
+      <div class="sf-hint">Your current equity as a percentage.</div>
+    </div>
+
+    <div class="sf">
+      <div class="sf-label">Others (investors, options, grants)</div>
+      <div class="sf-computed" id="setupOthers">&mdash;</div>
+      <div class="sf-hint">Auto-calculated from your ownership.</div>
+    </div>
+
+    <div class="sf">
+      <div class="sf-label">Current Valuation</div>
+      <input class="sf-input" id="setupVal" type="text" inputmode="decimal" placeholder="e.g. 5" autocomplete="off">
+      <div class="sf-hint">Your best estimate of company value today. Type 5 for $5M.</div>
+    </div>
+
+    <button class="setup-save" id="setupSave">Save &amp; Continue</button>
+  </div>
+</div>
+
 <script>
 const $=id=>document.getElementById(id);
 const K='founderDealCheck';
+const SK='founderSetup';
 const D={exit:50000000,dil:50};
+const SD={own:100,val:0,setupDone:false};
 
 function p(r){
   if(!r)return 0;
@@ -271,10 +354,24 @@ function p(r){
   return n>0&&n<1000?n*1e6:n;
 }
 
+function pPct(r){
+  if(!r)return 0;
+  const n=parseFloat(r.replace(/[^0-9.]/g,''));
+  if(!isFinite(n))return 0;
+  return Math.min(Math.max(n,0),100);
+}
+
 function fm(n){
   if(!isFinite(n)||n<=0)return'$0';
   if(n>=1e9)return'$'+(n/1e9).toFixed(n>=10e9?0:1).replace(/\.0$/,'')+'B';
   if(n>=1e6)return'$'+(n/1e6).toFixed(n>=10e6?0:1).replace(/\.0$/,'')+'M';
+  if(n>=1e3)return'$'+Math.round(n/1e3)+'K';
+  return'$'+Math.round(n);
+}
+
+function fmRound(n){
+  if(!isFinite(n)||n<=0)return'$0';
+  if(n>=1e6){const m=n/1e6;return'$'+(Math.round(m*10)/10)+'M';}
   if(n>=1e3)return'$'+Math.round(n/1e3)+'K';
   return'$'+Math.round(n);
 }
@@ -284,8 +381,18 @@ function fp(n){
   return(n>=10?n.toFixed(1):n.toFixed(2)).replace(/\.?0+$/,'')+'%';
 }
 
-function ld(){try{return{...D,...JSON.parse(localStorage.getItem(K)||'{}')};}catch{return{...D};}}
-function sv(){localStorage.setItem(K,JSON.stringify({exit:p($('exitVal').value)||D.exit,dil:+$('dil').value}));}
+function ldSettings(){try{return{...D,...JSON.parse(localStorage.getItem(K)||'{}')};}catch{return{...D};}}
+function svSettings(){localStorage.setItem(K,JSON.stringify({exit:p($('exitVal').value)||D.exit,dil:+$('dil').value}));}
+function ldSetup(){try{return{...SD,...JSON.parse(localStorage.getItem(SK)||'{}')};}catch{return{...SD};}}
+function svSetup(d){localStorage.setItem(SK,JSON.stringify(d));}
+
+function updateCtx(){
+  const s=ldSetup();
+  if(!s.setupDone){$('ctxText').textContent='No setup yet.';return;}
+  let t='You own '+s.own+'%';
+  if(s.val)t+=' at '+fmRound(s.val);
+  $('ctxText').textContent=t;
+}
 
 function foot(){
   const e=p($('exitVal').value)||D.exit;
@@ -299,6 +406,8 @@ function calc(){
   const raise=gv('raise'),pre=gv('pre');
   const exit=p($('exitVal').value)||D.exit;
   const dil=+$('dil').value/100;
+  const setup=ldSetup();
+  const founderToday=setup.own/100;
 
   if(!raise||!pre){
     $('o1').innerHTML='&mdash;';$('o1').classList.add('empty');
@@ -310,7 +419,8 @@ function calc(){
 
   const post=pre+raise;
   const inv=raise/post;
-  const fExit=(1-inv)*(1-dil);
+  const fRound=founderToday*(1-inv);
+  const fExit=fRound*(1-dil);
   const take=fExit*exit;
 
   $('postLine').textContent='Post-money: '+fm(post);
@@ -318,16 +428,19 @@ function calc(){
   $('o2').textContent=fp(fExit*100);$('o2').classList.remove('empty');
   $('o3').textContent=fm(take);$('o3').classList.remove('empty');
 
-  sv();foot();
+  svSettings();foot();
 }
 
 function snap(){
   const raise=gv('raise'),pre=gv('pre');
   const exit=p($('exitVal').value)||D.exit;
   const dil=+$('dil').value/100;
+  const setup=ldSetup();
+  const founderToday=setup.own/100;
   const post=pre+raise;
   const inv=post?raise/post:0;
-  const fExit=(1-inv)*(1-dil);
+  const fRound=founderToday*(1-inv);
+  const fExit=fRound*(1-dil);
   return fm(raise)+' raise @ '+fm(pre)+' pre\n\nPost-money: '+fm(post)+'\nInvestor gets: '+fp(inv*100)+'\nFounder at exit: '+fp(fExit*100)+'\nFounder take @ '+fm(exit)+' exit:\n'+fm(fExit*exit);
 }
 
@@ -336,12 +449,9 @@ function clean(id){
   const raw=el.value;
   const suf=$(id+'Suffix');
   if(!raw.trim()){suf.textContent='';el.dataset.parsed='0';el.style.width=Math.max(el.placeholder.length,1)+'ch';return;}
-  // parse with original input (includes any k/m/b suffix)
   const n=p(raw);
   if(!n){suf.textContent='';el.dataset.parsed='0';return;}
-  // store parsed value so calc() can use it
   el.dataset.parsed=n;
-  // strip to just digits and decimal for display
   const nums=raw.replace(/[^0-9.]/g,'');
   if(nums!==raw)el.value=nums;
   el.style.width=Math.max(el.value.length,1)+'ch';
@@ -351,6 +461,37 @@ function clean(id){
   else suf.textContent='';
 }
 
+// Setup overlay logic
+function openSetup(){
+  const s=ldSetup();
+  $('setupOwn').value=s.own!==100?s.own:'';
+  $('setupVal').value=s.val?fmRound(s.val).replace('$',''):'';
+  updateSetupOthers();
+  $('setupOverlay').classList.add('open');
+  setTimeout(()=>$('setupOwn').focus(),100);
+}
+
+function updateSetupOthers(){
+  const own=pPct($('setupOwn').value);
+  if(!$('setupOwn').value.trim()){$('setupOthers').textContent='—';return;}
+  const others=Math.round((100-own)*10)/10;
+  $('setupOthers').textContent=others+'%';
+}
+
+function saveSetup(){
+  const own=pPct($('setupOwn').value)||100;
+  const val=p($('setupVal').value)||0;
+  svSetup({own:Math.round(own*10)/10,val:val,setupDone:true});
+  $('setupOverlay').classList.remove('open');
+  updateCtx();
+  calc();
+}
+
+$('setupOwn').addEventListener('input',updateSetupOthers);
+$('setupSave').addEventListener('click',saveSetup);
+$('ctxEdit').addEventListener('click',openSetup);
+
+// Main input listeners
 $('raise').addEventListener('input',()=>{clean('raise');calc();});
 $('pre').addEventListener('input',()=>{clean('pre');calc();});
 document.querySelectorAll('.input-wrap').forEach(w=>w.addEventListener('click',()=>w.querySelector('input').focus()));
@@ -372,11 +513,15 @@ $('copyBtn').addEventListener('click',async()=>{
 });
 
 (function(){
-  const s=ld();
+  const s=ldSettings();
   $('exitVal').value=fm(s.exit);
   $('dil').value=s.dil;
   $('dilV').textContent=s.dil+'%';
   foot();
+  updateCtx();
+  // Show setup on first launch
+  const su=ldSetup();
+  if(!su.setupDone)openSetup();
 })();
 
 if('serviceWorker'in navigator)window.addEventListener('load',()=>navigator.serviceWorker.register('./service-worker.js').catch(()=>{}));
