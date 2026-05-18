@@ -1,7 +1,7 @@
 {
   "name": "Founder Deal Check",
   "short_name": "DealCheck",
-  "description": "Fast founder negotiation tool for live investor conversations.",
+  "description": "A quick founder valuation and dilution check from KV Consulting.",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",

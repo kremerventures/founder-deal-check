@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover">
-<title>Founder Deal Check</title>
+<title>Founder Deal Check — KV Consulting</title>
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#fafafa" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#0a0a0a" media="(prefers-color-scheme: dark)">
@@ -13,29 +13,29 @@
 <link rel="apple-touch-icon" href="icons/icon-192.png">
 <link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
 <style>
-:root {
-  --bg: #fafafa;
-  --text: #1a1a1a;
-  --text2: #444;
-  --muted: #999;
-  --dim: #bbb;
-  --input-bg: #f0f0f0;
-  --card-bg: #fff;
-  --border: rgba(0,0,0,0.06);
-  --focus: rgba(0,0,0,0.08);
-  --line: rgba(0,0,0,0.06);
+:root{
+  --bg:#fafafa;
+  --text:#1a1a1a;
+  --text2:#333;
+  --muted:#888;
+  --dim:#b0b0b0;
+  --input-bg:#f0f0f0;
+  --card-bg:#fff;
+  --border:rgba(0,0,0,0.08);
+  --focus:rgba(0,0,0,0.1);
+  --line:rgba(0,0,0,0.07);
 }
 @media(prefers-color-scheme:dark){:root{
-  --bg: #0a0a0a;
-  --text: #f0f0f0;
-  --text2: #bbb;
-  --muted: #666;
-  --dim: #444;
-  --input-bg: #1a1a1a;
-  --card-bg: #141414;
-  --border: rgba(255,255,255,0.06);
-  --focus: rgba(255,255,255,0.08);
-  --line: rgba(255,255,255,0.06);
+  --bg:#0a0a0a;
+  --text:#f0f0f0;
+  --text2:#c0c0c0;
+  --muted:#666;
+  --dim:#444;
+  --input-bg:#161616;
+  --card-bg:#111;
+  --border:rgba(255,255,255,0.08);
+  --focus:rgba(255,255,255,0.1);
+  --line:rgba(255,255,255,0.07);
 }}
 *{box-sizing:border-box;margin:0;padding:0}
 html{font-size:18px;-webkit-text-size-adjust:100%}
@@ -46,190 +46,161 @@ body{
   padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom);
   -webkit-font-smoothing:antialiased;
 }
-.app{max-width:420px;margin:0 auto;padding:32px 24px 48px}
-.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
-.top .title{font-size:1.15rem;font-weight:700;color:var(--text2);letter-spacing:-0.01em;margin:0}
+
+/* Layout */
+.app{max-width:400px;margin:0 auto;padding:44px 24px 56px}
+
+/* Brand mark — replace assets/kv-logo.png with exported KV Consulting logo */
+.brand-mark{display:inline-block;margin-bottom:22px;text-decoration:none;line-height:0}
+.brand-logo{height:24px;width:auto;max-width:110px;opacity:0.6;display:block}
+@media(prefers-color-scheme:dark){.brand-logo{filter:brightness(0) invert(1);opacity:0.45}}
+
+/* Header */
+.top{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:32px}
+.title{font-size:1.22rem;font-weight:700;color:var(--text);letter-spacing:-0.025em;line-height:1.15}
 .help-btn{
-  width:32px;height:32px;border-radius:50%;
-  border:1.5px solid var(--border);background:var(--card-bg);
-  color:var(--muted);font-size:0.82rem;font-weight:600;
+  width:24px;height:24px;border-radius:50%;
+  border:1px solid var(--border);background:none;
+  color:var(--dim);font-size:0.68rem;font-weight:600;
   cursor:pointer;display:flex;align-items:center;justify-content:center;
-  -webkit-appearance:none;transition:background 0.12s;flex-shrink:0;
+  flex-shrink:0;-webkit-appearance:none;transition:background 0.12s;
 }
 .help-btn:active{background:var(--input-bg)}
-.context-bar{
-  display:flex;align-items:center;gap:6px;
-  margin-bottom:28px;
-  font-size:0.78rem;color:var(--muted);
-}
-.context-bar .ctx-text{flex:1}
-.ctx-link{
-  color:var(--muted);text-decoration:underline;text-underline-offset:2px;
-  cursor:pointer;border:none;background:none;font:inherit;padding:0;
-  font-size:0.78rem;flex-shrink:0;
-}
-.inputs{display:flex;flex-direction:column;gap:20px}
-.label{font-size:0.78rem;font-weight:600;color:var(--text2);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:8px}
+
+/* Inputs */
+.inputs{display:flex;flex-direction:column;gap:18px}
+.label{font-size:0.68rem;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:0.09em;margin-bottom:7px}
 .input-wrap{
   display:flex;align-items:baseline;
-  background:var(--input-bg);border-radius:14px;
-  padding:18px 20px;
-  transition:box-shadow 0.15s;
+  background:var(--input-bg);border-radius:10px;
+  padding:15px 18px;transition:box-shadow 0.15s;
 }
-.input-wrap:focus-within{box-shadow:0 0 0 2.5px var(--focus)}
-.input-prefix{font-size:1.9rem;font-weight:700;letter-spacing:-0.03em;color:var(--dim);flex-shrink:0;pointer-events:none;margin-right:1px}
+.input-wrap:focus-within{box-shadow:0 0 0 2px var(--focus)}
+.input-prefix{font-size:1.8rem;font-weight:700;letter-spacing:-0.03em;color:var(--dim);flex-shrink:0;pointer-events:none;margin-right:1px}
 .input-inner{display:flex;align-items:baseline;flex:1;min-width:0;cursor:text;overflow:hidden}
-.input-suffix{font-size:1.9rem;font-weight:700;letter-spacing:-0.03em;color:var(--dim);pointer-events:none;margin-left:1px;flex-shrink:0}
+.input-suffix{font-size:1.8rem;font-weight:700;letter-spacing:-0.03em;color:var(--dim);pointer-events:none;margin-left:1px;flex-shrink:0}
 .field input{
-  flex:0 0 auto;width:1ch;min-width:1ch;font-size:1.9rem;font-weight:700;letter-spacing:-0.03em;
+  flex:0 0 auto;width:1ch;min-width:1ch;font-size:1.8rem;font-weight:700;letter-spacing:-0.03em;
   border:none;outline:none;background:transparent;color:var(--text);
   padding:0;-webkit-appearance:none;
 }
-.field input::placeholder{color:var(--muted);opacity:0.5;font-weight:500}
-.postmoney{font-size:0.95rem;font-weight:600;color:var(--text2);margin-top:14px;padding-left:2px}
-.results{margin-top:32px;margin-bottom:28px}
-.r{padding:18px 0;border-bottom:1px solid var(--line)}
+.field input::placeholder{color:var(--muted);opacity:0.35;font-weight:500}
+.postmoney{font-size:0.85rem;font-weight:600;color:var(--text2);margin-top:12px;padding-left:2px}
+
+/* Results */
+.results{margin-top:30px;margin-bottom:20px}
+.r{padding:15px 0;border-bottom:1px solid var(--line)}
 .r:last-child{border-bottom:none;padding-bottom:0}
-.r-label{font-size:0.78rem;font-weight:600;color:var(--text2);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:2px}
-.r-val{font-size:2.6rem;font-weight:800;letter-spacing:-0.04em;line-height:1.1}
-.r-val.empty{color:var(--dim);opacity:0.4}
-.copy{
-  display:block;width:100%;padding:15px;
-  border:1.5px solid var(--border);border-radius:14px;
-  background:var(--card-bg);color:var(--text2);
-  font-size:0.88rem;font-weight:600;cursor:pointer;
-  -webkit-appearance:none;transition:background 0.12s;
+.r-label{font-size:0.66rem;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:2px}
+.r-val{font-size:2.2rem;font-weight:700;letter-spacing:-0.04em;line-height:1.1}
+.r-val.empty{color:var(--dim);opacity:0.3}
+
+/* Copy — quiet text action, not a card button */
+.copy-action{
+  display:inline-block;background:none;border:none;
+  color:var(--muted);font-size:0.76rem;font-weight:600;
+  cursor:pointer;padding:0;
+  text-decoration:underline;text-underline-offset:3px;
+  text-decoration-color:var(--dim);
+  -webkit-appearance:none;transition:color 0.12s;
 }
-.copy:active{background:var(--input-bg)}
-.foot{margin-top:28px;padding-top:18px;border-top:1px solid var(--line)}
-.foot-line{font-size:0.95rem;font-weight:500;color:var(--text2);line-height:1.6}
-.ed{color:var(--dim);text-decoration:underline;text-underline-offset:2px;cursor:pointer;border:none;background:none;font:inherit;padding:0}
-.sett{display:none;margin-top:16px;flex-direction:column;gap:14px}
+.copy-action:active{color:var(--text2)}
+
+/* Assumptions — inline, expandable */
+.assumptions{margin-top:28px;padding-top:20px;border-top:1px solid var(--line)}
+.assumes-line{font-size:0.8rem;color:var(--text2);font-weight:500;line-height:1.6}
+.edit-link{
+  color:var(--muted);text-decoration:underline;text-underline-offset:2px;
+  cursor:pointer;border:none;background:none;font:inherit;padding:0;
+  font-size:0.76rem;margin-left:6px;
+}
+.edit-link:active{color:var(--text2)}
+.sett{display:none;margin-top:14px;flex-direction:column;gap:14px}
 .sett.open{display:flex}
 .sett input[type=text]{
   width:100%;font-size:1rem;font-weight:600;
   border:1px solid var(--border);outline:none;
   background:var(--input-bg);color:var(--text);
-  border-radius:10px;padding:11px 14px;-webkit-appearance:none;
+  border-radius:8px;padding:10px 14px;-webkit-appearance:none;
 }
-.sett input[type=text]:focus{box-shadow:0 0 0 2.5px var(--focus)}
+.sett input[type=text]:focus{box-shadow:0 0 0 2px var(--focus)}
 .sr{display:flex;align-items:center;gap:14px}
 .sr input[type=range]{flex:1;accent-color:var(--text);height:3px}
 .sr .v{font-size:1rem;font-weight:700;min-width:44px;text-align:right}
-.sl{font-size:0.68rem;font-weight:600;color:var(--muted);margin-bottom:5px}
-.hint{font-size:0.62rem;color:var(--dim);line-height:1.5;margin-top:8px}
-.disclaim{margin-top:24px;font-size:0.58rem;color:var(--dim);text-align:center;opacity:0.6}
-.footer-actions{margin-top:28px;padding-top:20px;border-top:1px solid var(--line);display:flex;flex-direction:column;gap:10px}
-.btn-secondary{
-  display:block;width:100%;padding:14px;
-  border:1.5px solid var(--border);border-radius:14px;
-  background:var(--card-bg);color:var(--text2);
-  font-size:0.85rem;font-weight:600;cursor:pointer;
-  -webkit-appearance:none;transition:background 0.12s;
-  text-decoration:none;text-align:center;
+.sl{font-size:0.66rem;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:5px}
+.hint{font-size:0.6rem;color:var(--dim);line-height:1.5;margin-top:6px}
+
+/* Footer */
+.footer{margin-top:36px;padding-top:24px;border-top:1px solid var(--line);text-align:center}
+.footer-links{display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap}
+.footer-links a,.footer-links button{
+  color:var(--muted);font-size:0.76rem;font-weight:500;
+  text-decoration:underline;text-underline-offset:2px;
+  text-decoration-color:var(--dim);
+  background:none;border:none;cursor:pointer;padding:0;font-family:inherit;
 }
-.btn-secondary:active{background:var(--input-bg)}
-.privacy-note{font-size:0.6rem;color:var(--dim);text-align:center;margin-top:4px}
-.brand-footer{margin-top:28px;text-align:center}
-.brand-footer .brand-name{font-size:0.72rem;font-weight:600;color:var(--muted)}
-.brand-footer .brand-tagline{font-size:0.6rem;color:var(--dim);margin-top:4px;line-height:1.5}
-/* Overlays */
+.footer-links a:active,.footer-links button:active{color:var(--text2)}
+.footer-sep{color:var(--dim);font-size:0.65rem;user-select:none}
+.privacy-note{font-size:0.56rem;color:var(--dim);margin-top:8px}
+.brand-foot{margin-top:28px}
+.brand-foot a{font-size:0.72rem;font-weight:600;color:var(--muted);text-decoration:none}
+.brand-foot a:hover{text-decoration:underline;text-underline-offset:2px}
+.brand-tagline{font-size:0.56rem;color:var(--dim);margin-top:3px;line-height:1.5}
+.disclaim{font-size:0.5rem;color:var(--dim);margin-top:20px;text-align:center;opacity:0.45}
+
+/* Help sheet */
 .overlay{
   display:none;position:fixed;inset:0;z-index:100;
-  background:rgba(0,0,0,0.4);
+  background:rgba(0,0,0,0.32);
   align-items:flex-end;justify-content:center;
 }
 .overlay.open{display:flex}
-@media(prefers-color-scheme:dark){.overlay{background:rgba(0,0,0,0.6)}}
+@media(prefers-color-scheme:dark){.overlay{background:rgba(0,0,0,0.55)}}
 .sheet{
-  background:var(--card-bg);
-  width:100%;max-width:420px;
+  background:var(--card-bg);width:100%;max-width:400px;
   max-height:85dvh;overflow-y:auto;
-  border-radius:18px 18px 0 0;
-  padding:28px 24px 36px;
-  box-shadow:0 -4px 40px rgba(0,0,0,0.15);
+  border-radius:14px 14px 0 0;
+  padding:24px 24px 32px;
+  box-shadow:0 -2px 24px rgba(0,0,0,0.1);
   -webkit-overflow-scrolling:touch;
 }
-.sheet-handle{
-  width:36px;height:4px;border-radius:2px;
-  background:var(--dim);opacity:0.4;
-  margin:0 auto 24px;
-}
-.sheet h2{font-size:1.05rem;font-weight:700;margin-bottom:20px;color:var(--text)}
-.sheet h3{font-size:0.72rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.05em;margin:20px 0 8px}
+.sheet-handle{width:32px;height:3px;border-radius:2px;background:var(--dim);opacity:0.3;margin:0 auto 20px}
+.sheet h2{font-size:1rem;font-weight:700;margin-bottom:18px;color:var(--text)}
+.sheet h3{font-size:0.66rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.06em;margin:18px 0 6px}
 .sheet h3:first-of-type{margin-top:0}
-.sheet p{font-size:0.82rem;color:var(--text);line-height:1.55;margin-bottom:6px}
-.sheet ul{list-style:none;padding:0;margin:0 0 6px}
-.sheet li{font-size:0.82rem;color:var(--text);line-height:1.55;padding-left:14px;position:relative}
-.sheet li::before{content:"";position:absolute;left:0;top:9px;width:4px;height:4px;border-radius:50%;background:var(--dim)}
-.sheet .tip{font-size:0.78rem;color:var(--muted);background:var(--input-bg);border-radius:10px;padding:12px 14px;margin-top:16px;line-height:1.5}
-.sheet .tip b{font-weight:600;color:var(--text)}
-.sheet .sheet-foot{font-size:0.62rem;color:var(--dim);margin-top:20px;text-align:center;opacity:0.7}
+.sheet p{font-size:0.8rem;color:var(--text2);line-height:1.55;margin-bottom:4px}
+.sheet ul{list-style:none;padding:0;margin:0 0 4px}
+.sheet li{font-size:0.8rem;color:var(--text2);line-height:1.6;padding-left:12px;position:relative}
+.sheet li::before{content:"";position:absolute;left:0;top:9px;width:3px;height:3px;border-radius:50%;background:var(--dim)}
+.sheet .tip{font-size:0.74rem;color:var(--muted);background:var(--input-bg);border-radius:8px;padding:10px 12px;margin-top:14px;line-height:1.5}
+.sheet .tip b{font-weight:600;color:var(--text2)}
+.sheet .sheet-foot{font-size:0.56rem;color:var(--dim);margin-top:18px;text-align:center;opacity:0.6}
 .sheet-close{
-  display:block;width:100%;padding:14px;margin-top:20px;
-  border:1.5px solid var(--border);border-radius:14px;
-  background:var(--card-bg);color:var(--muted);
-  font-size:0.82rem;font-weight:600;cursor:pointer;
-  -webkit-appearance:none;
+  display:block;width:100%;padding:12px;margin-top:16px;
+  border:1px solid var(--border);border-radius:10px;
+  background:none;color:var(--muted);
+  font-size:0.76rem;font-weight:600;cursor:pointer;-webkit-appearance:none;
 }
 .sheet-close:active{background:var(--input-bg)}
-/* Setup overlay */
-.setup-overlay{
-  display:none;position:fixed;inset:0;z-index:200;
-  background:var(--bg);
-  justify-content:center;align-items:flex-start;
-  overflow-y:auto;
-  -webkit-overflow-scrolling:touch;
-}
-.setup-overlay.open{display:flex}
-.setup{
-  width:100%;max-width:420px;
-  padding:48px 24px 48px;
-}
-.setup h1{font-size:1.3rem;font-weight:700;margin-bottom:6px}
-.setup .sub{font-size:0.85rem;color:var(--muted);margin-bottom:32px;line-height:1.5}
-.setup .sf{margin-bottom:20px}
-.setup .sf-label{font-size:0.72rem;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:8px}
-.setup .sf-wrap{
-  display:flex;align-items:baseline;
-  background:var(--input-bg);border-radius:14px;padding:16px 18px;
-  transition:box-shadow 0.15s;
-}
-.setup .sf-wrap:focus-within{box-shadow:0 0 0 2.5px var(--focus)}
-.setup .sf-input{
-  flex:1;min-width:0;font-size:1.4rem;font-weight:700;letter-spacing:-0.02em;
-  border:none;outline:none;background:transparent;color:var(--text);
-  padding:0;-webkit-appearance:none;
-}
-.setup .sf-input::placeholder{color:var(--muted);opacity:0.5;font-weight:500}
-.setup .sf-unit{font-size:1.4rem;font-weight:700;color:var(--dim);margin-left:2px;flex-shrink:0}
-.setup .sf-hint{font-size:0.68rem;color:var(--dim);margin-top:6px;line-height:1.4}
-.setup .sf-computed{font-size:0.82rem;color:var(--text2);margin-top:6px;font-weight:600}
-.setup-save{
-  display:block;width:100%;padding:16px;margin-top:28px;
-  border:none;border-radius:14px;
-  background:var(--text);color:var(--bg);
-  font-size:0.95rem;font-weight:700;cursor:pointer;
-  -webkit-appearance:none;
-}
-.setup-save:active{opacity:0.85}
+
 @media(max-width:380px){
   html{font-size:16px}
-  .app{padding:24px 18px 40px}
-  .r-val{font-size:2.2rem}
+  .app{padding:32px 18px 44px}
+  .r-val{font-size:1.9rem}
 }
 </style>
 </head>
 <body>
 <main class="app">
-  <div class="top">
-    <div class="title">Founder Deal Check</div>
-    <button class="help-btn" id="helpBtn" aria-label="Help">?</button>
-  </div>
 
-  <div class="context-bar">
-    <span class="ctx-text" id="ctxText"></span>
-    <button class="ctx-link" id="ctxEdit">Edit setup</button>
+  <!-- Replace assets/kv-logo.png with exported KV Consulting logo from kremerventures.com -->
+  <a href="https://www.kremerventures.com/" target="_blank" rel="noopener" class="brand-mark">
+    <img src="assets/kv-logo.png" alt="KV Consulting" class="brand-logo">
+  </a>
+
+  <div class="top">
+    <h1 class="title">Founder Deal Check</h1>
+    <button class="help-btn" id="helpBtn" aria-label="Help">?</button>
   </div>
 
   <div class="inputs">
@@ -271,12 +242,12 @@ body{
     </div>
   </div>
 
-  <button class="copy" id="copyBtn">Copy Snapshot</button>
+  <button class="copy-action" id="copyBtn">Copy snapshot</button>
 
-  <div class="foot">
-    <div class="foot-line" id="footLine">
-      Assumes $50M exit and 50% future dilution.
-      <button class="ed" id="editBtn">Edit</button>
+  <div class="assumptions">
+    <div class="assumes-line">
+      <span id="assumesText">Assumes $50M exit · 50% future dilution</span>
+      <button class="edit-link" id="editBtn">Edit</button>
     </div>
     <div class="sett" id="sett">
       <div>
@@ -289,121 +260,61 @@ body{
           <input id="dil" type="range" min="0" max="80" step="5" value="50">
           <span class="v" id="dilV">50%</span>
         </div>
-        <div class="hint">Typical venture-backed companies may experience ~40–60% additional dilution across future funding rounds.</div>
+        <div class="hint">Typical: 40-60% across future rounds.</div>
       </div>
     </div>
   </div>
 
-  <div class="footer-actions">
-    <a class="btn-secondary" id="scheduleBtn" href="https://www.kremerventures.com/" target="_blank" rel="noopener">Schedule time with Joe</a>
-    <button class="btn-secondary" id="shareBtn">Share this app</button>
-    <div class="privacy-note">Sharing the app does not share your numbers.</div>
-  </div>
+  <footer class="footer">
+    <div class="footer-links">
+      <a id="scheduleBtn" target="_blank" rel="noopener">Schedule time with Joe</a>
+      <span class="footer-sep">&middot;</span>
+      <button id="shareBtn">Share this app</button>
+    </div>
+    <div class="privacy-note">Sharing does not share your numbers.</div>
+    <div class="brand-foot">
+      <a href="https://www.kremerventures.com/" target="_blank" rel="noopener">A KV Consulting tool</a>
+      <div class="brand-tagline">Founder finance, valuation and investor conversations</div>
+    </div>
+    <div class="disclaim">Not financial advice.</div>
+  </footer>
 
-  <div class="brand-footer">
-    <div class="brand-name">A Kremer Ventures tool</div>
-    <div class="brand-tagline">Built to make founder/investor valuation conversations clearer.</div>
-  </div>
-
-  <div class="disclaim">Not financial advice.</div>
 </main>
 
-<!-- Help overlay -->
+<!-- Help -->
 <div class="overlay" id="overlay">
   <div class="sheet" id="sheet">
     <div class="sheet-handle"></div>
-    <h2>Founder Deal Check</h2>
-    <p>Use this when someone gives you a possible investment amount and valuation.</p>
-    <h3>Before the meeting</h3>
-    <p>Set your assumptions:</p>
-    <ul>
-      <li>Target exit</li>
-      <li>Future dilution</li>
-    </ul>
-    <p>These are saved on this device.</p>
-    <h3>During the meeting</h3>
-    <p>Enter:</p>
-    <ul>
-      <li>Raise</li>
-      <li>Valuation</li>
-    </ul>
+    <h2>How to use this</h2>
+
+    <h3>Before a meeting</h3>
+    <p>Set your target exit and future dilution assumption.</p>
+
+    <h3>During a meeting</h3>
+    <p>Enter the raise amount and pre-money valuation being discussed.</p>
+
     <h3>What the results mean</h3>
     <ul>
-      <li><b>Investor Gets</b> — their ownership from this round</li>
-      <li><b>You at Exit</b> — your estimated ownership after future dilution</li>
-      <li><b>Your Take</b> — estimated payout at your saved exit value</li>
+      <li><b>Investor Gets</b> &mdash; ownership from this round</li>
+      <li><b>You at Exit</b> &mdash; estimated ownership after future dilution</li>
+      <li><b>Your Take</b> &mdash; estimated payout at your saved exit value</li>
     </ul>
+
     <div class="tip"><b>Tip:</b> Type "2" for $2M, "500k" for $500K, or "8.5" for $8.5M.</div>
+
     <button class="sheet-close" id="helpClose">Close</button>
-    <div class="sheet-foot">This is a quick conversation tool, not a full cap table model.</div>
-  </div>
-</div>
-
-<!-- Setup overlay -->
-<div class="setup-overlay" id="setupOverlay">
-  <div class="setup">
-    <h1>One-time setup</h1>
-    <div class="sub">Settings can be changed anytime.</div>
-
-    <div class="sf">
-      <div class="sf-label">Your Ownership</div>
-      <div class="sf-wrap">
-        <input class="sf-input" id="setupOwn" type="text" inputmode="decimal" placeholder="e.g. 80" autocomplete="off">
-        <span class="sf-unit">%</span>
-      </div>
-      <div class="sf-hint">Your current equity as a percentage.</div>
-    </div>
-
-    <div class="sf">
-      <div class="sf-label">Others (investors, options, grants)</div>
-      <div class="sf-computed" id="setupOthers">&mdash;</div>
-      <div class="sf-hint">Auto-calculated from your ownership.</div>
-    </div>
-
-    <div class="sf">
-      <div class="sf-label">Current Valuation</div>
-      <div class="sf-wrap">
-        <span class="sf-unit" style="margin-left:0;margin-right:2px">$</span>
-        <input class="sf-input" id="setupVal" type="text" inputmode="decimal" placeholder="e.g. 5" autocomplete="off">
-        <span class="sf-unit">M</span>
-      </div>
-      <div class="sf-hint">Your best estimate of company value today. Type 5 for $5M.</div>
-    </div>
-
-    <div class="sf">
-      <div class="sf-label">Target Exit Valuation</div>
-      <div class="sf-wrap">
-        <span class="sf-unit" style="margin-left:0;margin-right:2px">$</span>
-        <input class="sf-input" id="setupExit" type="text" inputmode="decimal" placeholder="e.g. 50" autocomplete="off">
-        <span class="sf-unit">M</span>
-      </div>
-      <div class="sf-hint">What you think the company could exit for.</div>
-    </div>
-
-    <div class="sf">
-      <div class="sf-label">Your Target Take at Exit</div>
-      <div class="sf-wrap">
-        <span class="sf-unit" style="margin-left:0;margin-right:2px">$</span>
-        <input class="sf-input" id="setupTake" type="text" inputmode="decimal" placeholder="e.g. 10" autocomplete="off">
-        <span class="sf-unit">M</span>
-      </div>
-      <div class="sf-hint">What you want to walk away with personally.</div>
-    </div>
-
-    <button class="setup-save" id="setupSave">Save &amp; Continue</button>
+    <div class="sheet-foot">A quick conversation tool, not a full cap table model.</div>
   </div>
 </div>
 
 <script>
 const $=id=>document.getElementById(id);
-// Replace with direct scheduling link if available
-const SCHEDULE_URL='https://www.kremerventures.com/';
+const SCHEDULE_URL='https://outlook.office.com/bookwithme/user/d91e362450804ebba376aeb4be39b9b9@kremerventures.com/meetingtype/TFxGHltMbUKhspB0b2m9nQ2?anonymous&ismsaljsauthenabled&ep=mLinkFromTile';
 const APP_URL='https://kremerventures.github.io/founder-deal-check/';
 const K='founderDealCheck';
-const SK='founderSetup';
 const D={exit:50000000,dil:50};
-const SD={own:100,val:0,exitTarget:50000000,takeTarget:0,setupDone:false};
 
+/* Parse shorthand amounts: 2 = $2M, 500k = $500K, 8.5m = $8.5M */
 function p(r){
   if(!r)return 0;
   const s=r.replace(/[$,\s]/g,'').toLowerCase();
@@ -415,24 +326,10 @@ function p(r){
   return n>0&&n<1000?n*1e6:n;
 }
 
-function pPct(r){
-  if(!r)return 0;
-  const n=parseFloat(r.replace(/[^0-9.]/g,''));
-  if(!isFinite(n))return 0;
-  return Math.min(Math.max(n,0),100);
-}
-
 function fm(n){
   if(!isFinite(n)||n<=0)return'$0';
   if(n>=1e9)return'$'+(n/1e9).toFixed(n>=10e9?0:1).replace(/\.0$/,'')+'B';
   if(n>=1e6)return'$'+(n/1e6).toFixed(n>=10e6?0:1).replace(/\.0$/,'')+'M';
-  if(n>=1e3)return'$'+Math.round(n/1e3)+'K';
-  return'$'+Math.round(n);
-}
-
-function fmRound(n){
-  if(!isFinite(n)||n<=0)return'$0';
-  if(n>=1e6){const m=n/1e6;return'$'+(Math.round(m*10)/10)+'M';}
   if(n>=1e3)return'$'+Math.round(n/1e3)+'K';
   return'$'+Math.round(n);
 }
@@ -444,22 +341,11 @@ function fp(n){
 
 function ldSettings(){try{return{...D,...JSON.parse(localStorage.getItem(K)||'{}')};}catch{return{...D};}}
 function svSettings(){localStorage.setItem(K,JSON.stringify({exit:p($('exitVal').value)||D.exit,dil:+$('dil').value}));}
-function ldSetup(){try{return{...SD,...JSON.parse(localStorage.getItem(SK)||'{}')};}catch{return{...SD};}}
-function svSetup(d){localStorage.setItem(SK,JSON.stringify(d));}
-
-function updateCtx(){
-  const s=ldSetup();
-  if(!s.setupDone){$('ctxText').textContent='No setup yet.';return;}
-  let t='You own '+s.own+'%';
-  if(s.val)t+=' at '+fmRound(s.val);
-  if(s.takeTarget)t+=' — target: '+fm(s.takeTarget);
-  $('ctxText').textContent=t;
-}
 
 function foot(){
   const e=p($('exitVal').value)||D.exit;
   const d=$('dil').value;
-  $('footLine').firstChild.textContent='Assumes '+fm(e)+' exit and '+d+'% future dilution. ';
+  $('assumesText').textContent='Assumes '+fm(e)+' exit · '+d+'% future dilution';
 }
 
 function gv(id){return +$(id).dataset.parsed||p($(id).value);}
@@ -468,8 +354,6 @@ function calc(){
   const raise=gv('raise'),pre=gv('pre');
   const exit=p($('exitVal').value)||D.exit;
   const dil=+$('dil').value/100;
-  const setup=ldSetup();
-  const founderToday=setup.own/100;
 
   if(!raise||!pre){
     $('o1').innerHTML='&mdash;';$('o1').classList.add('empty');
@@ -481,7 +365,7 @@ function calc(){
 
   const post=pre+raise;
   const inv=raise/post;
-  const fRound=founderToday*(1-inv);
+  const fRound=1-inv;
   const fExit=fRound*(1-dil);
   const take=fExit*exit;
 
@@ -497,13 +381,11 @@ function snap(){
   const raise=gv('raise'),pre=gv('pre');
   const exit=p($('exitVal').value)||D.exit;
   const dil=+$('dil').value/100;
-  const setup=ldSetup();
-  const founderToday=setup.own/100;
   const post=pre+raise;
   const inv=post?raise/post:0;
-  const fRound=founderToday*(1-inv);
+  const fRound=1-inv;
   const fExit=fRound*(1-dil);
-  return fm(raise)+' raise @ '+fm(pre)+' pre\n\nPost-money: '+fm(post)+'\nInvestor gets: '+fp(inv*100)+'\nFounder at exit: '+fp(fExit*100)+'\nFounder take @ '+fm(exit)+' exit:\n'+fm(fExit*exit);
+  return fm(raise)+' raise @ '+fm(pre)+' pre\n\nPost-money: '+fm(post)+'\nInvestor gets: '+fp(inv*100)+'\nYou at exit: '+fp(fExit*100)+'\nYour take @ '+fm(exit)+' exit: '+fm(fExit*exit);
 }
 
 function clean(id){
@@ -523,81 +405,46 @@ function clean(id){
   else suf.textContent='';
 }
 
-// Setup overlay logic
-function openSetup(){
-  const s=ldSetup();
-  $('setupOwn').value=s.own!==100?s.own:'';
-  $('setupVal').value=s.val?fmRound(s.val).replace('$',''):'';
-  $('setupExit').value=s.exitTarget?fmRound(s.exitTarget).replace('$',''):'';
-  $('setupTake').value=s.takeTarget?fmRound(s.takeTarget).replace('$',''):'';
-  updateSetupOthers();
-  $('setupOverlay').classList.add('open');
-  setTimeout(()=>$('setupOwn').focus(),100);
-}
-
-function updateSetupOthers(){
-  const own=pPct($('setupOwn').value);
-  if(!$('setupOwn').value.trim()){$('setupOthers').textContent='—';return;}
-  const others=Math.round((100-own)*10)/10;
-  $('setupOthers').textContent=others+'%';
-}
-
-function saveSetup(){
-  const own=pPct($('setupOwn').value)||100;
-  const val=p($('setupVal').value)||0;
-  const exitTarget=p($('setupExit').value)||0;
-  const takeTarget=p($('setupTake').value)||0;
-  svSetup({own:Math.round(own*10)/10,val:val,exitTarget:exitTarget,takeTarget:takeTarget,setupDone:true});
-  // Sync exit target with assumptions if set
-  if(exitTarget){$('exitVal').value=fm(exitTarget);localStorage.setItem(K,JSON.stringify({exit:exitTarget,dil:+$('dil').value}));}
-  $('setupOverlay').classList.remove('open');
-  updateCtx();
-  foot();
-  calc();
-}
-
-$('setupOwn').addEventListener('input',updateSetupOthers);
-$('setupSave').addEventListener('click',saveSetup);
-$('ctxEdit').addEventListener('click',openSetup);
-
-// Main input listeners
+/* Input listeners */
 $('raise').addEventListener('input',()=>{clean('raise');calc();});
 $('pre').addEventListener('input',()=>{clean('pre');calc();});
 document.querySelectorAll('.input-wrap').forEach(w=>w.addEventListener('click',()=>w.querySelector('input').focus()));
 $('exitVal').addEventListener('input',calc);
 $('dil').addEventListener('input',()=>{$('dilV').textContent=$('dil').value+'%';calc();});
 
+/* Help sheet */
 $('helpBtn').addEventListener('click',()=>$('overlay').classList.add('open'));
 $('helpClose').addEventListener('click',()=>$('overlay').classList.remove('open'));
 $('overlay').addEventListener('click',(e)=>{if(e.target===$('overlay'))$('overlay').classList.remove('open');});
 
+/* Edit assumptions */
 $('editBtn').addEventListener('click',()=>{
   const o=$('sett').classList.toggle('open');
   $('editBtn').textContent=o?'Done':'Edit';
 });
 
+/* Copy snapshot */
 $('copyBtn').addEventListener('click',async()=>{
-  try{await navigator.clipboard.writeText(snap());$('copyBtn').textContent='Copied';setTimeout(()=>$('copyBtn').textContent='Copy Snapshot',1200);}
+  try{await navigator.clipboard.writeText(snap());$('copyBtn').textContent='Copied';setTimeout(()=>$('copyBtn').textContent='Copy snapshot',1200);}
   catch{prompt('Copy this:',snap());}
 });
 
+/* Share app only — never shares user values */
 $('shareBtn').addEventListener('click',async()=>{
-  const shareData={title:'Founder Deal Check',text:'A quick founder valuation and dilution check from Kremer Ventures.',url:APP_URL};
+  const shareData={title:'Founder Deal Check',text:'Founder Deal Check\nA quick founder valuation and dilution check from KV Consulting.',url:APP_URL};
   if(navigator.share){try{await navigator.share(shareData);return;}catch{}}
-  try{await navigator.clipboard.writeText(APP_URL);$('shareBtn').textContent='App link copied';setTimeout(()=>$('shareBtn').textContent='Share this app',1200);}
+  try{await navigator.clipboard.writeText(APP_URL);$('shareBtn').textContent='Link copied';setTimeout(()=>$('shareBtn').textContent='Share this app',1200);}
   catch{prompt('Share this link:',APP_URL);}
 });
 
+/* Init */
 (function(){
   const s=ldSettings();
   $('exitVal').value=fm(s.exit);
   $('dil').value=s.dil;
   $('dilV').textContent=s.dil+'%';
+  $('scheduleBtn').href=SCHEDULE_URL;
   foot();
-  updateCtx();
-  // Show setup on first launch
-  const su=ldSetup();
-  if(!su.setupDone)openSetup();
 })();
 
 if('serviceWorker'in navigator)window.addEventListener('load',()=>navigator.serviceWorker.register('./service-worker.js').catch(()=>{}));
