@@ -119,6 +119,20 @@ body{
 .sl{font-size:0.68rem;font-weight:600;color:var(--muted);margin-bottom:5px}
 .hint{font-size:0.62rem;color:var(--dim);line-height:1.5;margin-top:8px}
 .disclaim{margin-top:24px;font-size:0.58rem;color:var(--dim);text-align:center;opacity:0.6}
+.footer-actions{margin-top:28px;padding-top:20px;border-top:1px solid var(--line);display:flex;flex-direction:column;gap:10px}
+.btn-secondary{
+  display:block;width:100%;padding:14px;
+  border:1.5px solid var(--border);border-radius:14px;
+  background:var(--card-bg);color:var(--text2);
+  font-size:0.85rem;font-weight:600;cursor:pointer;
+  -webkit-appearance:none;transition:background 0.12s;
+  text-decoration:none;text-align:center;
+}
+.btn-secondary:active{background:var(--input-bg)}
+.privacy-note{font-size:0.6rem;color:var(--dim);text-align:center;margin-top:4px}
+.brand-footer{margin-top:28px;text-align:center}
+.brand-footer .brand-name{font-size:0.72rem;font-weight:600;color:var(--muted)}
+.brand-footer .brand-tagline{font-size:0.6rem;color:var(--dim);margin-top:4px;line-height:1.5}
 /* Overlays */
 .overlay{
   display:none;position:fixed;inset:0;z-index:100;
@@ -274,6 +288,17 @@ body{
     </div>
   </div>
 
+  <div class="footer-actions">
+    <a class="btn-secondary" id="scheduleBtn" href="https://www.kremerventures.com/" target="_blank" rel="noopener">Schedule time with Joe</a>
+    <button class="btn-secondary" id="shareBtn">Share this app</button>
+    <div class="privacy-note">Sharing the app does not share your numbers.</div>
+  </div>
+
+  <div class="brand-footer">
+    <div class="brand-name">A Kremer Ventures tool</div>
+    <div class="brand-tagline">Built to make founder/investor valuation conversations clearer.</div>
+  </div>
+
   <div class="disclaim">Not financial advice.</div>
 </main>
 
@@ -338,6 +363,9 @@ body{
 
 <script>
 const $=id=>document.getElementById(id);
+// Replace with direct scheduling link if available
+const SCHEDULE_URL='https://www.kremerventures.com/';
+const APP_URL='https://kremerventures.github.io/founder-deal-check/';
 const K='founderDealCheck';
 const SK='founderSetup';
 const D={exit:50000000,dil:50};
@@ -510,6 +538,13 @@ $('editBtn').addEventListener('click',()=>{
 $('copyBtn').addEventListener('click',async()=>{
   try{await navigator.clipboard.writeText(snap());$('copyBtn').textContent='Copied';setTimeout(()=>$('copyBtn').textContent='Copy Snapshot',1200);}
   catch{prompt('Copy this:',snap());}
+});
+
+$('shareBtn').addEventListener('click',async()=>{
+  const shareData={title:'Founder Deal Check',text:'A quick founder valuation and dilution check from Kremer Ventures.',url:APP_URL};
+  if(navigator.share){try{await navigator.share(shareData);return;}catch{}}
+  try{await navigator.clipboard.writeText(APP_URL);$('shareBtn').textContent='App link copied';setTimeout(()=>$('shareBtn').textContent='Share this app',1200);}
+  catch{prompt('Share this link:',APP_URL);}
 });
 
 (function(){
