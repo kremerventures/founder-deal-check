@@ -190,13 +190,19 @@ body{
 .setup .sub{font-size:0.85rem;color:var(--muted);margin-bottom:32px;line-height:1.5}
 .setup .sf{margin-bottom:20px}
 .setup .sf-label{font-size:0.72rem;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:8px}
-.setup .sf-input{
-  width:100%;font-size:1.4rem;font-weight:700;letter-spacing:-0.02em;
-  border:none;outline:none;background:var(--input-bg);color:var(--text);
-  border-radius:14px;padding:16px 18px;-webkit-appearance:none;
+.setup .sf-wrap{
+  display:flex;align-items:baseline;
+  background:var(--input-bg);border-radius:14px;padding:16px 18px;
+  transition:box-shadow 0.15s;
 }
-.setup .sf-input:focus{box-shadow:0 0 0 2.5px var(--focus)}
+.setup .sf-wrap:focus-within{box-shadow:0 0 0 2.5px var(--focus)}
+.setup .sf-input{
+  flex:1;min-width:0;font-size:1.4rem;font-weight:700;letter-spacing:-0.02em;
+  border:none;outline:none;background:transparent;color:var(--text);
+  padding:0;-webkit-appearance:none;
+}
 .setup .sf-input::placeholder{color:var(--muted);opacity:0.5;font-weight:500}
+.setup .sf-unit{font-size:1.4rem;font-weight:700;color:var(--dim);margin-left:2px;flex-shrink:0}
 .setup .sf-hint{font-size:0.68rem;color:var(--dim);margin-top:6px;line-height:1.4}
 .setup .sf-computed{font-size:0.82rem;color:var(--text2);margin-top:6px;font-weight:600}
 .setup-save{
@@ -336,12 +342,15 @@ body{
 <!-- Setup overlay -->
 <div class="setup-overlay" id="setupOverlay">
   <div class="setup">
-    <h1>Your Setup</h1>
-    <div class="sub">Set your current position before heading into meetings.</div>
+    <h1>One-time setup</h1>
+    <div class="sub">Settings can be changed anytime.</div>
 
     <div class="sf">
       <div class="sf-label">Your Ownership</div>
-      <input class="sf-input" id="setupOwn" type="text" inputmode="decimal" placeholder="e.g. 80" autocomplete="off">
+      <div class="sf-wrap">
+        <input class="sf-input" id="setupOwn" type="text" inputmode="decimal" placeholder="e.g. 80" autocomplete="off">
+        <span class="sf-unit">%</span>
+      </div>
       <div class="sf-hint">Your current equity as a percentage.</div>
     </div>
 
@@ -353,7 +362,11 @@ body{
 
     <div class="sf">
       <div class="sf-label">Current Valuation</div>
-      <input class="sf-input" id="setupVal" type="text" inputmode="decimal" placeholder="e.g. 5" autocomplete="off">
+      <div class="sf-wrap">
+        <span class="sf-unit" style="margin-left:0;margin-right:2px">$</span>
+        <input class="sf-input" id="setupVal" type="text" inputmode="decimal" placeholder="e.g. 5" autocomplete="off">
+        <span class="sf-unit">M</span>
+      </div>
       <div class="sf-hint">Your best estimate of company value today. Type 5 for $5M.</div>
     </div>
 
