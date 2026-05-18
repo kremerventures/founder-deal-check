@@ -56,7 +56,7 @@ body{
 @media(prefers-color-scheme:dark){.brand-logo{filter:brightness(0) invert(1);opacity:0.45}}
 
 /* Header */
-.top{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:32px}
+.top{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px}
 .title{font-size:1.22rem;font-weight:700;color:var(--text);letter-spacing:-0.025em;line-height:1.15}
 .help-btn{
   width:24px;height:24px;border-radius:50%;
@@ -66,6 +66,19 @@ body{
   flex-shrink:0;-webkit-appearance:none;transition:background 0.12s;
 }
 .help-btn:active{background:var(--input-bg)}
+
+/* Context bar */
+.context-bar{
+  display:flex;align-items:center;gap:6px;
+  margin-bottom:28px;
+  font-size:0.74rem;color:var(--muted);
+}
+.context-bar .ctx-text{flex:1}
+.ctx-link{
+  color:var(--muted);text-decoration:underline;text-underline-offset:2px;
+  cursor:pointer;border:none;background:none;font:inherit;padding:0;
+  font-size:0.74rem;flex-shrink:0;
+}
 
 /* Inputs */
 .inputs{display:flex;flex-direction:column;gap:18px}
@@ -95,7 +108,7 @@ body{
 .r-val{font-size:2.2rem;font-weight:700;letter-spacing:-0.04em;line-height:1.1}
 .r-val.empty{color:var(--dim);opacity:0.3}
 
-/* Copy — quiet text action, not a card button */
+/* Copy — quiet text action */
 .copy-action{
   display:inline-block;background:none;border:none;
   color:var(--muted);font-size:0.76rem;font-weight:600;
@@ -183,6 +196,47 @@ body{
 }
 .sheet-close:active{background:var(--input-bg)}
 
+/* Setup overlay */
+.setup-overlay{
+  display:none;position:fixed;inset:0;z-index:200;
+  background:var(--bg);
+  justify-content:center;align-items:flex-start;
+  overflow-y:auto;
+  -webkit-overflow-scrolling:touch;
+}
+.setup-overlay.open{display:flex}
+.setup{
+  width:100%;max-width:400px;
+  padding:48px 24px 48px;
+}
+.setup h1{font-size:1.25rem;font-weight:700;margin-bottom:6px;letter-spacing:-0.02em}
+.setup .sub{font-size:0.8rem;color:var(--muted);margin-bottom:32px;line-height:1.5}
+.setup .sf{margin-bottom:20px}
+.setup .sf-label{font-size:0.68rem;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:0.07em;margin-bottom:8px}
+.setup .sf-wrap{
+  display:flex;align-items:baseline;
+  background:var(--input-bg);border-radius:10px;padding:14px 16px;
+  transition:box-shadow 0.15s;
+}
+.setup .sf-wrap:focus-within{box-shadow:0 0 0 2px var(--focus)}
+.setup .sf-input{
+  flex:1;min-width:0;font-size:1.3rem;font-weight:700;letter-spacing:-0.02em;
+  border:none;outline:none;background:transparent;color:var(--text);
+  padding:0;-webkit-appearance:none;
+}
+.setup .sf-input::placeholder{color:var(--muted);opacity:0.4;font-weight:500}
+.setup .sf-unit{font-size:1.3rem;font-weight:700;color:var(--dim);margin-left:2px;flex-shrink:0}
+.setup .sf-hint{font-size:0.62rem;color:var(--dim);margin-top:6px;line-height:1.4}
+.setup .sf-computed{font-size:0.8rem;color:var(--text2);margin-top:6px;font-weight:600}
+.setup-save{
+  display:block;width:100%;padding:15px;margin-top:28px;
+  border:none;border-radius:10px;
+  background:var(--text);color:var(--bg);
+  font-size:0.9rem;font-weight:700;cursor:pointer;
+  -webkit-appearance:none;letter-spacing:-0.01em;
+}
+.setup-save:active{opacity:0.85}
+
 @media(max-width:380px){
   html{font-size:16px}
   .app{padding:32px 18px 44px}
@@ -201,6 +255,11 @@ body{
   <div class="top">
     <h1 class="title">Founder Deal Check</h1>
     <button class="help-btn" id="helpBtn" aria-label="Help">?</button>
+  </div>
+
+  <div class="context-bar">
+    <span class="ctx-text" id="ctxText"></span>
+    <button class="ctx-link" id="ctxEdit">Edit setup</button>
   </div>
 
   <div class="inputs">
@@ -307,12 +366,69 @@ body{
   </div>
 </div>
 
+<!-- Setup overlay -->
+<div class="setup-overlay" id="setupOverlay">
+  <div class="setup">
+    <h1>One-time setup</h1>
+    <div class="sub">Settings can be changed anytime.</div>
+
+    <div class="sf">
+      <div class="sf-label">Your Ownership</div>
+      <div class="sf-wrap">
+        <input class="sf-input" id="setupOwn" type="text" inputmode="decimal" placeholder="e.g. 80" autocomplete="off">
+        <span class="sf-unit">%</span>
+      </div>
+      <div class="sf-hint">Your current equity as a percentage.</div>
+    </div>
+
+    <div class="sf">
+      <div class="sf-label">Others (investors, options, grants)</div>
+      <div class="sf-computed" id="setupOthers">&mdash;</div>
+      <div class="sf-hint">Auto-calculated from your ownership.</div>
+    </div>
+
+    <div class="sf">
+      <div class="sf-label">Current Valuation</div>
+      <div class="sf-wrap">
+        <span class="sf-unit" style="margin-left:0;margin-right:2px">$</span>
+        <input class="sf-input" id="setupVal" type="text" inputmode="decimal" placeholder="e.g. 5" autocomplete="off">
+        <span class="sf-unit">M</span>
+      </div>
+      <div class="sf-hint">Your best estimate of company value today. Type 5 for $5M.</div>
+    </div>
+
+    <div class="sf">
+      <div class="sf-label">Target Exit Valuation</div>
+      <div class="sf-wrap">
+        <span class="sf-unit" style="margin-left:0;margin-right:2px">$</span>
+        <input class="sf-input" id="setupExit" type="text" inputmode="decimal" placeholder="e.g. 50" autocomplete="off">
+        <span class="sf-unit">M</span>
+      </div>
+      <div class="sf-hint">What you think the company could exit for.</div>
+    </div>
+
+    <div class="sf">
+      <div class="sf-label">Your Target Take at Exit</div>
+      <div class="sf-wrap">
+        <span class="sf-unit" style="margin-left:0;margin-right:2px">$</span>
+        <input class="sf-input" id="setupTake" type="text" inputmode="decimal" placeholder="e.g. 10" autocomplete="off">
+        <span class="sf-unit">M</span>
+      </div>
+      <div class="sf-hint">What you want to walk away with personally.</div>
+    </div>
+
+    <button class="setup-save" id="setupSave">Save &amp; Continue</button>
+  </div>
+</div>
+
 <script>
 const $=id=>document.getElementById(id);
 const SCHEDULE_URL='https://outlook.office.com/bookwithme/user/d91e362450804ebba376aeb4be39b9b9@kremerventures.com/meetingtype/TFxGHltMbUKhspB0b2m9nQ2?anonymous&ismsaljsauthenabled&ep=mLinkFromTile';
 const APP_URL='https://kremerventures.github.io/founder-deal-check/';
 const K='founderDealCheck';
+const SK='founderSetup';
 const D={exit:50000000,dil:50};
+const SD={own:100,val:0,exitTarget:50000000,takeTarget:0,setupDone:false};
 
 /* Parse shorthand amounts: 2 = $2M, 500k = $500K, 8.5m = $8.5M */
 function p(r){
@@ -326,10 +442,24 @@ function p(r){
   return n>0&&n<1000?n*1e6:n;
 }
 
+function pPct(r){
+  if(!r)return 0;
+  const n=parseFloat(r.replace(/[^0-9.]/g,''));
+  if(!isFinite(n))return 0;
+  return Math.min(Math.max(n,0),100);
+}
+
 function fm(n){
   if(!isFinite(n)||n<=0)return'$0';
   if(n>=1e9)return'$'+(n/1e9).toFixed(n>=10e9?0:1).replace(/\.0$/,'')+'B';
   if(n>=1e6)return'$'+(n/1e6).toFixed(n>=10e6?0:1).replace(/\.0$/,'')+'M';
+  if(n>=1e3)return'$'+Math.round(n/1e3)+'K';
+  return'$'+Math.round(n);
+}
+
+function fmRound(n){
+  if(!isFinite(n)||n<=0)return'$0';
+  if(n>=1e6){const m=n/1e6;return'$'+(Math.round(m*10)/10)+'M';}
   if(n>=1e3)return'$'+Math.round(n/1e3)+'K';
   return'$'+Math.round(n);
 }
@@ -341,6 +471,17 @@ function fp(n){
 
 function ldSettings(){try{return{...D,...JSON.parse(localStorage.getItem(K)||'{}')};}catch{return{...D};}}
 function svSettings(){localStorage.setItem(K,JSON.stringify({exit:p($('exitVal').value)||D.exit,dil:+$('dil').value}));}
+function ldSetup(){try{return{...SD,...JSON.parse(localStorage.getItem(SK)||'{}')};}catch{return{...SD};}}
+function svSetup(d){localStorage.setItem(SK,JSON.stringify(d));}
+
+function updateCtx(){
+  const s=ldSetup();
+  if(!s.setupDone){$('ctxText').textContent='No setup yet.';return;}
+  let t='You own '+s.own+'%';
+  if(s.val)t+=' at '+fmRound(s.val);
+  if(s.takeTarget)t+=' — target: '+fm(s.takeTarget);
+  $('ctxText').textContent=t;
+}
 
 function foot(){
   const e=p($('exitVal').value)||D.exit;
@@ -354,6 +495,8 @@ function calc(){
   const raise=gv('raise'),pre=gv('pre');
   const exit=p($('exitVal').value)||D.exit;
   const dil=+$('dil').value/100;
+  const setup=ldSetup();
+  const founderToday=setup.own/100;
 
   if(!raise||!pre){
     $('o1').innerHTML='&mdash;';$('o1').classList.add('empty');
@@ -365,7 +508,7 @@ function calc(){
 
   const post=pre+raise;
   const inv=raise/post;
-  const fRound=1-inv;
+  const fRound=founderToday*(1-inv);
   const fExit=fRound*(1-dil);
   const take=fExit*exit;
 
@@ -381,9 +524,11 @@ function snap(){
   const raise=gv('raise'),pre=gv('pre');
   const exit=p($('exitVal').value)||D.exit;
   const dil=+$('dil').value/100;
+  const setup=ldSetup();
+  const founderToday=setup.own/100;
   const post=pre+raise;
   const inv=post?raise/post:0;
-  const fRound=1-inv;
+  const fRound=founderToday*(1-inv);
   const fExit=fRound*(1-dil);
   return fm(raise)+' raise @ '+fm(pre)+' pre\n\nPost-money: '+fm(post)+'\nInvestor gets: '+fp(inv*100)+'\nYou at exit: '+fp(fExit*100)+'\nYour take @ '+fm(exit)+' exit: '+fm(fExit*exit);
 }
@@ -404,6 +549,43 @@ function clean(id){
   else if(n>=1e3)suf.textContent='K';
   else suf.textContent='';
 }
+
+/* Setup overlay logic */
+function openSetup(){
+  const s=ldSetup();
+  $('setupOwn').value=s.own!==100?s.own:'';
+  $('setupVal').value=s.val?fmRound(s.val).replace('$',''):'';
+  $('setupExit').value=s.exitTarget?fmRound(s.exitTarget).replace('$',''):'';
+  $('setupTake').value=s.takeTarget?fmRound(s.takeTarget).replace('$',''):'';
+  updateSetupOthers();
+  $('setupOverlay').classList.add('open');
+  setTimeout(()=>$('setupOwn').focus(),100);
+}
+
+function updateSetupOthers(){
+  const own=pPct($('setupOwn').value);
+  if(!$('setupOwn').value.trim()){$('setupOthers').textContent='—';return;}
+  const others=Math.round((100-own)*10)/10;
+  $('setupOthers').textContent=others+'%';
+}
+
+function saveSetup(){
+  const own=pPct($('setupOwn').value)||100;
+  const val=p($('setupVal').value)||0;
+  const exitTarget=p($('setupExit').value)||0;
+  const takeTarget=p($('setupTake').value)||0;
+  svSetup({own:Math.round(own*10)/10,val:val,exitTarget:exitTarget,takeTarget:takeTarget,setupDone:true});
+  /* Sync exit target with assumptions if set */
+  if(exitTarget){$('exitVal').value=fm(exitTarget);localStorage.setItem(K,JSON.stringify({exit:exitTarget,dil:+$('dil').value}));}
+  $('setupOverlay').classList.remove('open');
+  updateCtx();
+  foot();
+  calc();
+}
+
+$('setupOwn').addEventListener('input',updateSetupOthers);
+$('setupSave').addEventListener('click',saveSetup);
+$('ctxEdit').addEventListener('click',openSetup);
 
 /* Input listeners */
 $('raise').addEventListener('input',()=>{clean('raise');calc();});
@@ -445,6 +627,10 @@ $('shareBtn').addEventListener('click',async()=>{
   $('dilV').textContent=s.dil+'%';
   $('scheduleBtn').href=SCHEDULE_URL;
   foot();
+  updateCtx();
+  /* Show setup on first launch */
+  const su=ldSetup();
+  if(!su.setupDone)openSetup();
 })();
 
 if('serviceWorker'in navigator)window.addEventListener('load',()=>navigator.serviceWorker.register('./service-worker.js').catch(()=>{}));
