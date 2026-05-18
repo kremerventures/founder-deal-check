@@ -370,6 +370,26 @@ body{
       <div class="sf-hint">Your best estimate of company value today. Type 5 for $5M.</div>
     </div>
 
+    <div class="sf">
+      <div class="sf-label">Target Exit Valuation</div>
+      <div class="sf-wrap">
+        <span class="sf-unit" style="margin-left:0;margin-right:2px">$</span>
+        <input class="sf-input" id="setupExit" type="text" inputmode="decimal" placeholder="e.g. 50" autocomplete="off">
+        <span class="sf-unit">M</span>
+      </div>
+      <div class="sf-hint">What you think the company could exit for.</div>
+    </div>
+
+    <div class="sf">
+      <div class="sf-label">Your Target Take at Exit</div>
+      <div class="sf-wrap">
+        <span class="sf-unit" style="margin-left:0;margin-right:2px">$</span>
+        <input class="sf-input" id="setupTake" type="text" inputmode="decimal" placeholder="e.g. 10" autocomplete="off">
+        <span class="sf-unit">M</span>
+      </div>
+      <div class="sf-hint">What you want to walk away with personally.</div>
+    </div>
+
     <button class="setup-save" id="setupSave">Save &amp; Continue</button>
   </div>
 </div>
@@ -382,7 +402,7 @@ const APP_URL='https://kremerventures.github.io/founder-deal-check/';
 const K='founderDealCheck';
 const SK='founderSetup';
 const D={exit:50000000,dil:50};
-const SD={own:100,val:0,setupDone:false};
+const SD={own:100,val:0,exitTarget:50000000,takeTarget:0,setupDone:false};
 
 function p(r){
   if(!r)return 0;
@@ -432,6 +452,7 @@ function updateCtx(){
   if(!s.setupDone){$('ctxText').textContent='No setup yet.';return;}
   let t='You own '+s.own+'%';
   if(s.val)t+=' at '+fmRound(s.val);
+  if(s.takeTarget)t+=' — target: '+fm(s.takeTarget);
   $('ctxText').textContent=t;
 }
 
@@ -507,6 +528,8 @@ function openSetup(){
   const s=ldSetup();
   $('setupOwn').value=s.own!==100?s.own:'';
   $('setupVal').value=s.val?fmRound(s.val).replace('$',''):'';
+  $('setupExit').value=s.exitTarget?fmRound(s.exitTarget).replace('$',''):'';
+  $('setupTake').value=s.takeTarget?fmRound(s.takeTarget).replace('$',''):'';
   updateSetupOthers();
   $('setupOverlay').classList.add('open');
   setTimeout(()=>$('setupOwn').focus(),100);
@@ -522,9 +545,14 @@ function updateSetupOthers(){
 function saveSetup(){
   const own=pPct($('setupOwn').value)||100;
   const val=p($('setupVal').value)||0;
-  svSetup({own:Math.round(own*10)/10,val:val,setupDone:true});
+  const exitTarget=p($('setupExit').value)||0;
+  const takeTarget=p($('setupTake').value)||0;
+  svSetup({own:Math.round(own*10)/10,val:val,exitTarget:exitTarget,takeTarget:takeTarget,setupDone:true});
+  // Sync exit target with assumptions if set
+  if(exitTarget){$('exitVal').value=fm(exitTarget);localStorage.setItem(K,JSON.stringify({exit:exitTarget,dil:+$('dil').value}));}
   $('setupOverlay').classList.remove('open');
   updateCtx();
+  foot();
   calc();
 }
 
