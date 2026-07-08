@@ -31,3 +31,5 @@ To deploy manually if ever needed:
 ```bash
 netlify deploy --prod --dir .
 ```
+
+<!-- auto-deploy-canary-postrevoke-x7k2 -->
